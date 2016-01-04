@@ -82,7 +82,7 @@ class Jenkins
     puts "delete_nodes_by_name with argument #{names.inspect}"
     names.each do |name|
       puts "Enqueueing a job to delete the node named: #{name}"
-      http_post("#{NODE_DELETE_ENDPOINT}?NODE_NAME_TO_DELETE=#{name}")
+      # http_post("#{NODE_DELETE_ENDPOINT}?NODE_NAME_TO_DELETE=#{name}")
       sleep 5
     end
   end
@@ -100,7 +100,7 @@ class Jenkins
     puts "Deleting nodes from jenkins!!! with argument #{names.inspect}"
     names.each do |name|
       puts "Immediately deleting node named: #{name} from Jenkins"
-      http_post("/computer/#{name}/doDelete")
+      # http_post("/computer/#{name}/doDelete")
     end
   end
 
