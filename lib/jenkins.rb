@@ -79,8 +79,9 @@ class Jenkins
   end
 
   def self.delete_nodes_by_name(names)
+    puts "delete_nodes_by_name with argument #{names.inspect}"
     names.each do |name|
-      puts "deleting node named: #{name} "
+      puts "Enqueueing a job to delete the node named: #{name}"
       http_post("#{NODE_DELETE_ENDPOINT}?NODE_NAME_TO_DELETE=#{name}")
       sleep 5
     end
@@ -96,17 +97,21 @@ class Jenkins
 
   # this method will delete a node from jenkins list, but should NOT be used to delete a connected node, because it could be in the middle of a job
   def self.delete_nodes_from_jenkins!(names)
+    puts "Deleting nodes from jenkins!!! with argument #{names.inspect}"
     names.each do |name|
-      puts "deleting node named: #{name} from Jenkins"
+      puts "Immediately deleting node named: #{name} from Jenkins"
       http_post("/computer/#{name}/doDelete")
     end
   end
 
   # Nodes in Jenkins list, that aren't connected, should be shutdown
   def self.remove_disconnected_nodes
+    puts "Removing disconnected nodes"
     # get disconnected node names that are not the TEMPLATE node
     scalable_nodes = get_scalable_nodes
+    puts "scalable_nodes = #{scalable_nodes.inspect}"
     offline_nodes = scalable_nodes.select {|k| k['offline']}
+    puts "offline_nodes = #{offline_nodes.inspect}"
     names = offline_nodes.map {|k,v| k['displayName']}
     Jenkins.delete_nodes_from_jenkins!(names) unless names.empty?
   end
