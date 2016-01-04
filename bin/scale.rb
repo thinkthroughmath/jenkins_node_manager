@@ -20,12 +20,20 @@ end
 
 # Nodes that where passed in, that were not in the jenkins list of nodes should be shutdown
 def clean_up_disconnected_remote_servers
+  puts "Cleaning up disconnected remote servers"
   jenkins_node_names   = Jenkins.get_node_names
+  puts "jenkins_node_names = #{jenkins_node_names.inspect}"
   jenkins_node_names  = jenkins_node_names.map(&:downcase)
+  puts "jenkins_node_names downcased = #{jenkins_node_names.inspect}"
   other_nodes_list = ARGV[0].split ','
+  puts "other_nodes_list = #{other_nodes_list.inspect}"
   nodes_to_delete = other_nodes_list.reject{|x| jenkins_node_names.include? x}
   puts "Nodes that will be deleted: #{nodes_to_delete}"
-  Jenkins.delete_nodes_by_name nodes_to_delete unless nodes_to_delete.empty?
+  puts "nodes_to_delete.empty? #{nodes_to_delete.empty?}"
+  unless nodes_to_delete.empty?
+    puts "Calling Jenkins.delete_nodes_by_name with #{nodes_to_delete.inspect}"
+    Jenkins.delete_nodes_by_name nodes_to_delete 
+  end
 end
 
 def scale_nodes()
