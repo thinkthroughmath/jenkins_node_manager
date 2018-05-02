@@ -63,6 +63,11 @@ def scale_nodes()
     end
   end
 
+  if busy_nodes > 0 && num_queued == 0 && scale_by < 0
+    puts "Not scaling down nodes while active jobs are being serviced. We were killing nodes with active threads on them"
+    return
+  end
+
   if scale_by > 0
     puts "scale up by #{scale_by}"
     Jenkins.add_nodes scale_by unless ARGV[0] =~ /pretend/
