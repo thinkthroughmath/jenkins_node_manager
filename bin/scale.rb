@@ -63,7 +63,7 @@ def scale_nodes()
     end
   end
 
-  if busy_nodes > 0 && num_queued == 0 && scale_by < 0
+  if num_busy_nodes > 0 && num_queued == 0 && scale_by < 0
     puts "Not scaling down nodes while active jobs are being serviced. We were killing nodes with active threads on them"
     return
   end
